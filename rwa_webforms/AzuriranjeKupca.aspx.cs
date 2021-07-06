@@ -29,7 +29,7 @@ namespace rwa_webforms
                 }
                 catch (Exception ex)
                 {
-                                        lblInfo.Text = ex.Message;
+                    lblInfo.Text = ex.Message;
                 }
 
             }
@@ -42,7 +42,7 @@ namespace rwa_webforms
             ddlDrzaveFilter.DataTextField = "Naziv";
             ddlDrzaveFilter.DataValueField = "IDDrzava";
             ddlDrzaveFilter.DataBind();
-            ddlDrzaveFilter.Items.Add(new ListItem("--Odaberite grad--", "0"));
+            ddlDrzaveFilter.Items.Add(new ListItem("--Odaberite državu--", "0"));
             ddlDrzaveFilter.SelectedValue = "0";
         }
 
@@ -65,22 +65,22 @@ namespace rwa_webforms
             int kupacID = (int)gvKupci.DataKeys[indexRetka].Value;
             try
             {
-            fillDdlDrzave();
-                
-            Kupac k = Repozitorij.GetOdabraniKupac(kupacID);
-            txtIme.Text = k.Ime;
-            txtPrezime.Text = k.Prezime;
-            txtEmail.Text = k.Email;
-            txtTelefon.Text = k.Telefon;
-            txtIDKUPAC.Text = kupacID.ToString();
-            if (k.GradID != 0)
-            {
+                fillDdlDrzave();
 
-                ddlDrzave.SelectedValue = Repozitorij.GetGrad(k.GradID).DrzavaID.ToString();
-                RefreshDDLgradovi(ddlGradovi, ddlDrzave);
-                ddlGradovi.SelectedValue = k.GradID.ToString();
+                Kupac k = Repozitorij.GetOdabraniKupac(kupacID);
+                txtIme.Text = k.Ime;
+                txtPrezime.Text = k.Prezime;
+                txtEmail.Text = k.Email;
+                txtTelefon.Text = k.Telefon;
+                txtIDKUPAC.Text = kupacID.ToString();
+                if (k.GradID != 0)
+                {
 
-            }
+                    ddlDrzave.SelectedValue = Repozitorij.GetGrad(k.GradID).DrzavaID.ToString();
+                    RefreshDDLgradovi(ddlGradovi, ddlDrzave);
+                    ddlGradovi.SelectedValue = k.GradID.ToString();
+
+                }
             }
             catch (Exception ex)
             {
@@ -115,23 +115,23 @@ namespace rwa_webforms
         {
             try
             {
-            List<Kupac> listasort;
+                List<Kupac> listasort;
 
-            var gradIDfilter = ddlGradoviFilter.SelectedValue;
+                var gradIDfilter = ddlGradoviFilter.SelectedValue;
 
-            if (GridViewSortDirection == SortDirection.Ascending)
-            {
-                GridViewSortDirection = SortDirection.Descending;
-                listasort = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)).OrderBy(k => k[e.SortExpression]).ToList();
-            }
-            else
-            {
-                GridViewSortDirection = SortDirection.Ascending;
-                listasort = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)).OrderByDescending(k => k[e.SortExpression]).ToList();
-            }
+                if (GridViewSortDirection == SortDirection.Ascending)
+                {
+                    GridViewSortDirection = SortDirection.Descending;
+                    listasort = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)).OrderBy(k => k[e.SortExpression]).ToList();
+                }
+                else
+                {
+                    GridViewSortDirection = SortDirection.Ascending;
+                    listasort = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)).OrderByDescending(k => k[e.SortExpression]).ToList();
+                }
 
-            gvKupci.DataSource = listasort;
-            gvKupci.DataBind();
+                gvKupci.DataSource = listasort;
+                gvKupci.DataBind();
 
             }
             catch (Exception ex)
@@ -147,9 +147,19 @@ namespace rwa_webforms
 
             try
             {
-            gvKupci.PageIndex = e.NewPageIndex;
-            gvKupci.DataSource = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)).OrderBy(k => k.IDKupac).ToList();
-            gvKupci.DataBind();
+                gvKupci.PageIndex = e.NewPageIndex;
+                if (ddlGradoviFilter.SelectedValue != "0")
+                {
+                    gvKupci.DataSource = Repozitorij.GetKupci().Where(k => k.GradID.ToString() == ddlGradoviFilter.SelectedValue || string.IsNullOrEmpty(ddlGradoviFilter.SelectedValue)
+                    ).OrderBy(k => k.IDKupac).ToList();
+                }
+                else
+                {
+
+                    gvKupci.DataSource = Repozitorij.GetKupci().Where(k => Repozitorij.GetGrad(k.GradID).DrzavaID.ToString() == ddlDrzaveFilter.SelectedValue || string.IsNullOrEmpty(ddlDrzaveFilter.SelectedValue)
+                   ).OrderBy(k => k.IDKupac).ToList();
+                }
+                gvKupci.DataBind();
 
             }
             catch (Exception ex)
@@ -165,7 +175,7 @@ namespace rwa_webforms
             try
             {
 
-            RefreshDDLgradovi(ddlGradovi, ddlDrzave);
+                RefreshDDLgradovi(ddlGradovi, ddlDrzave);
             }
             catch (Exception ex)
             {
@@ -181,6 +191,12 @@ namespace rwa_webforms
             ddlGrad.DataTextField = "Naziv";
             ddlGrad.DataValueField = "IDGrad";
             ddlGrad.DataBind();
+
+            if (ddlGrad == ddlGradoviFilter)
+            {
+                ddlGrad.Items.Add(new ListItem("--Odaberite grad--", "0"));
+                ddlGrad.SelectedValue = "0";
+            }
         }
 
         protected void btnAzuriraj_Click(object sender, EventArgs e)
@@ -231,10 +247,10 @@ namespace rwa_webforms
             int.TryParse(id.ToString(), out int k);
             try
             {
-            t=Repozitorij.GetKomercijalist(k).PunoIme;
+                t = Repozitorij.GetKomercijalist(k).PunoIme;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 t = String.Empty;
                 lblInfo.Text = ex.Message;
@@ -248,7 +264,7 @@ namespace rwa_webforms
             int.TryParse(id.ToString(), out int k);
             try
             {
-                t= Repozitorij.GetGrad(k).Naziv;
+                t = Repozitorij.GetGrad(k).Naziv;
             }
             catch (Exception ex)
             {
@@ -310,18 +326,30 @@ namespace rwa_webforms
 
         protected void ddlGradoviFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-            gvKupci.DataSource = Repozitorij.GetKupci().Where(kupac => kupac.GradID == int.Parse(ddlGradoviFilter.SelectedValue)).ToList();
+           
+                try
+                {
+                if (ddlGradoviFilter.SelectedValue == "0")
+                {
+                    gvKupci.DataSource = Repozitorij.GetKupci().Where(kupac => Repozitorij.GetGrad(kupac.GradID).DrzavaID == int.Parse(ddlDrzaveFilter.SelectedValue)).ToList();
+                
+                }
+                else
+                {
+            
+                    gvKupci.DataSource = Repozitorij.GetKupci().Where(kupac => kupac.GradID == int.Parse(ddlGradoviFilter.SelectedValue)).ToList();
+                  
+                }
+
+                }
+                catch (Exception ex)
+                {
+
+                    lblInfo.Text = ex.Message;
+                }
             gvKupci.DataBind();
 
-            }
-            catch (Exception ex)
-            {
-
-                lblInfo.Text = ex.Message;
-            }
+        }
 
         }
     }
-}
