@@ -1,0 +1,138 @@
+﻿@using rwa_mvc.Models.ViewModel
+@model ProizvodEditVm
+
+
+@{
+    ViewBag.Title = "Create";
+    SelectList ddlOpcija = new SelectList(items: Model.Potkategorije, dataTextField: "Naziv", dataValueField: "IDPotkategorija");
+}
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        const form = $(e.target);
+        const proizvod = {};
+        if (form.valid()) {
+
+            const params = form.serializeArray();
+
+            params.forEach(param => {
+                if (param.name.lastIndexOf('__') != -1) return;
+                let propertyName = param.name.substr(param.name.lastIndexOf('.') + 1);
+                if(propertyName=='IDPotkategorija') propertyName='PotkategorijaID'
+
+                proizvod[propertyName] = param.value;
+
+            })
+
+
+
+            $.ajax({
+
+                url: '@Url.Action(controllerName: "Proizvodi", actionName:"Create")',
+                data: proizvod,
+                method: 'post',
+                statusCode: {
+                    200: function () {
+                        $('.badge').html('Proizvod uspješno dodana');
+                        setTimeout(function () {
+
+                            window.location = '@Url.Action(controllerName: "Proizvodi", actionName:"Index")'
+                        }, 2000);
+                    }
+                },
+                400: function () {
+                    $('.badge').html('proizvod nije uspješno dodana');
+
+
+                }
+            })
+
+        }
+    })
+
+
+    </script>
+}
+
+
+<h2>Create</h2>
+<span class="badge badge-primary"></span>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Proizvod</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.Naziv, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proizvod.Naziv, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proizvod.Naziv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.BrojProizvoda, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proizvod.BrojProizvoda, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proizvod.BrojProizvoda, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.Boja, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proizvod.Boja, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proizvod.Boja, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.CijenaBezPDV, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proizvod.CijenaBezPDV, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proizvod.CijenaBezPDV, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.MinimalnaKolicina, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proizvod.MinimalnaKolicina, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proizvod.MinimalnaKolicina, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proizvod.PotkategorijaID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList(name: "IDPotkategorija", selectList: ddlOpcija
+                                             , htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Proizvod.PotkategorijaID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+

@@ -1,0 +1,105 @@
+﻿@using rwa_mvc.Models.ViewModel
+
+@model PotkategorijaEditVm
+
+
+@{
+    ViewBag.Title = "Create";
+    SelectList ddlOpcija = new SelectList(items: Model.Kategorije, dataTextField: "Naziv", dataValueField: "IDKategorija");
+}
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        const form = $(e.target);
+        const potkategorija = {};
+        if (form.valid()) {
+
+            const params = form.serializeArray();
+
+            params.forEach(param => {
+                if (param.name.lastIndexOf('__') != -1) return;
+                let propertyName = param.name.substr(param.name.lastIndexOf('.') + 1);
+                if(propertyName=='IDKategorija') propertyName='KategorijaID'
+
+                potkategorija[propertyName] = param.value;
+
+            })
+
+
+
+            $.ajax({
+
+                url: '@Url.Action(controllerName: "Potkategorija", actionName:"Create")',
+                data: potkategorija,
+                method: 'post',
+                statusCode: {
+                    200: function () {
+                        $('.badge').html('potkategorija uspješno dodana');
+                        setTimeout(function () {
+
+                            window.location = '@Url.Action(controllerName: "Potkategorija", actionName:"Index")'
+                        }, 2000);
+                    }
+                },
+                400: function () {
+                    $('.badge').html('potkategorija nije uspješno dodana');
+
+
+                }
+            })
+
+        }
+    })
+
+
+    </script>
+}
+
+<h2>Create</h2>
+
+<span class="badge badge-primary"></span>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Potkategorija</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Potkategorija.KategorijaID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList(name: "IDKategorija", selectList: ddlOpcija
+                              , htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Potkategorija.KategorijaID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Potkategorija.Naziv, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Potkategorija.Naziv, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Potkategorija.Naziv, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

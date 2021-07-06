@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Kupci";
+}
+<h1>Kupci</h1>
+<div class="jumbotron">
+   
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Email</th>
+                <th>Telefon</th>
+            </tr>
+
+
+
+        </thead>
+
+    </table>
+        
+</div>
+
+
+@section scripts{
+    
+    
+    <script>
+        const dataTableConfig = {
+            ajax: {
+                url: '/api/kupci',
+                dataSrc:''
+            },
+            columns: [
+                {data:'IDKupac'},
+                {data:'Ime'},
+                { data: 'Prezime' },
+                {
+                    data: 'Email',
+                    render: function (email) {
+                        return `<a href="mailto:${email}">${email}</a>`
+                    }
+
+                },
+
+
+                {data:'Telefon'},
+
+
+            ]
+
+
+        }
+        $('.table').DataTable(dataTableConfig)
+
+
+
+    </script>
+    
+    
+    
+    
+    }
+
