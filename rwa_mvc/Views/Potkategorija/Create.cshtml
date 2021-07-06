@@ -1,64 +1,43 @@
 ﻿@using rwa_mvc.Models.ViewModel
-
 @model PotkategorijaEditVm
-
-
 @{
     ViewBag.Title = "Create";
     SelectList ddlOpcija = new SelectList(items: Model.Kategorije, dataTextField: "Naziv", dataValueField: "IDKategorija");
 }
-
-
 @section scripts{
-
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-
-
     $('form').on('submit', function (e) {
         e.preventDefault();
         const form = $(e.target);
         const potkategorija = {};
         if (form.valid()) {
-
             const params = form.serializeArray();
-
             params.forEach(param => {
                 if (param.name.lastIndexOf('__') != -1) return;
                 let propertyName = param.name.substr(param.name.lastIndexOf('.') + 1);
                 if(propertyName=='IDKategorija') propertyName='KategorijaID'
-
                 potkategorija[propertyName] = param.value;
-
             })
 
-
-
             $.ajax({
-
                 url: '@Url.Action(controllerName: "Potkategorija", actionName:"Create")',
                 data: potkategorija,
                 method: 'post',
                 statusCode: {
                     200: function () {
-                        $('.badge').html('potkategorija uspješno dodana');
+                        $('.badge').html('Potkategorija uspješno dodana.');
                         setTimeout(function () {
-
                             window.location = '@Url.Action(controllerName: "Potkategorija", actionName:"Index")'
                         }, 2000);
                     }
                 },
                 400: function () {
-                    $('.badge').html('potkategorija nije uspješno dodana');
-
-
+                    $('.badge').html('Potkategorija nije uspješno dodana.');
                 }
             })
-
         }
     })
-
-
     </script>
 }
 
@@ -69,11 +48,9 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
         <h4>Potkategorija</h4>
         <hr />
-
         <div class="form-group">
             @Html.LabelFor(model => model.Potkategorija.KategorijaID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

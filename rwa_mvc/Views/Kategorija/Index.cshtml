@@ -1,33 +1,24 @@
-﻿
-
-@model PagedList.IPagedList<Kategorija>
-  @using DALL.BusinessLayer;
+﻿@model PagedList.IPagedList<Kategorija>
+@using DALL.BusinessLayer;
 @using PagedList.Mvc;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Kategorija";
 }
-
 <h2>Kategorija</h2>
-
 <p>
-
-    @Html.ActionLink(linkText: "Create new", actionName: "Create", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: new {  }) 
-
-
+    @Html.ActionLink(linkText: "Create new", actionName: "Create", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: new { })
 </p>
 <div class="jumbotron">
 
     <table class="table table-striped">
-
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().IDKategorija)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Naziv)
-
             </th>
             <th></th>
         </tr>
@@ -48,55 +39,40 @@
                    @class = "btn btn-danger",
                    data_id = item.IDKategorija,
                    data_naziv = item.Naziv
-
                }, routeValues: new { id = item.IDKategorija })
                 </td>
             </tr>
         }
-
     </table>
     <br />
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
     @Html.PagedListPager(Model, page => Url.Action("Index",
         new { page }))
+</div>
 
-
-    </div>
-
-    @section scripts{
-        <script>
+@section scripts{
+    <script>
         $('.btn-danger').on('click', function (e) {
 
             e.preventDefault();
-
             const { id, naziv } = this.dataset;
             if (confirm(`Jeste li sigurni da želite obrisati kategoriju ${naziv}?`)) {
                 $.ajax({
-
                     url: '@Url.Action(controllerName:"Kategorija",actionName:"Delete")',
                     data: { id },
                     statusCode: {
-
                         200: function () {
                             $('.table')
                                 .find(`[data-id=${id}]`)
                                 .parents('tr').hide(500);
                         },
                         400: function () {
-
                             console.log('Kategorija nie orbisa');
                         }
                     }
                 });
-
-
             }
-
         })
+    </script>
 
-
-
-        </script>
-
-    }
+}

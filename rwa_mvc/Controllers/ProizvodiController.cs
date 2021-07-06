@@ -14,13 +14,11 @@ namespace rwa_mvc.Controllers
     [Authorize]
     public class ProizvodiController : Controller
     {
-        // GET: Proizvodi
 
         public ActionResult Index(int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-
             var model = Repozitorij.GetProizvodi();
 
             return View(model.ToPagedList(pageNumber, pageSize));
@@ -30,7 +28,6 @@ namespace rwa_mvc.Controllers
         {
 
             var proizvod = Repozitorij.GetProizvod(id);
-
             var model = new ProizvodEditVm
             {
                 Proizvod = proizvod,
@@ -43,7 +40,6 @@ namespace rwa_mvc.Controllers
         [HttpPost]
         public ActionResult Edit(Proizvod p)
         {
-
             try
             {
                 Repozitorij.UpdateProizvod(p);
@@ -51,20 +47,15 @@ namespace rwa_mvc.Controllers
             }
             catch (Exception)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
         }
 
         public ActionResult Create()
         {
             var model = new ProizvodEditVm
             {
-
-
                 Potkategorije = Repozitorij.GetPotkategorije()
-
             };
 
             return View(model);
@@ -81,7 +72,6 @@ namespace rwa_mvc.Controllers
             }
             catch (Exception)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -98,7 +88,6 @@ namespace rwa_mvc.Controllers
             }
             catch (Exception)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "nije obrisan");
             }
 

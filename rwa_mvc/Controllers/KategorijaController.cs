@@ -10,38 +10,38 @@ using DALL.BusinessLayer;
 using PagedList;
 
 namespace rwa_mvc.Controllers
-{  
+{
     [Authorize]
     public class KategorijaController : Controller
     {
 
-      
-        // GET: Kategorija
+
+     
 
         public ActionResult Index(int? page)
         {
-                       var model = Repozitorij.GetKategorije();
+            var model = Repozitorij.GetKategorije();
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
 
-    public ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             try
             {
                 Repozitorij.KaskadnoObrisiKategoriju(id);
-                return new HttpStatusCodeResult(HttpStatusCode.OK,"obrisan");
+                return new HttpStatusCodeResult(HttpStatusCode.OK, "obrisan");
 
             }
             catch (Exception)
             {
 
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"nije obrisan");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "nije obrisan");
             }
 
-    }
+        }
 
         public ActionResult GetNaziv(int id)
         {
@@ -58,7 +58,7 @@ namespace rwa_mvc.Controllers
 
         public ActionResult Create()
         {
-                        return View();
+            return View();
         }
 
         [HttpPost]
@@ -78,7 +78,7 @@ namespace rwa_mvc.Controllers
 
         }
         [HttpPost]
-          public ActionResult Edit(Kategorija k)
+        public ActionResult Edit(Kategorija k)
         {
 
             try
@@ -96,5 +96,5 @@ namespace rwa_mvc.Controllers
 
 
     }
-   
+
 }

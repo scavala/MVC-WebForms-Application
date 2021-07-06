@@ -1,18 +1,13 @@
 ﻿@model PagedList.IPagedList<Proizvod>
 @using DALL.BusinessLayer;
 @using PagedList.Mvc;
-
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
 @{
     ViewBag.Title = "Proizvodi";
 }
-
 <h2>Proizvodi</h2>
-
 <p>
     @Html.ActionLink(linkText: "Create new", actionName: "Create", htmlAttributes: new { @class = "btn btn-primary" }, routeValues: new { })
-
 </p>
 <div class="jumbotron">
     <table class="table">
@@ -72,54 +67,39 @@
                    @class = "btn btn-danger",
                    data_id = item.IDProizvod,
                    data_naziv = item.Naziv
-
                }, routeValues: new { id = item.IDProizvod })
                 </td>
             </tr>
         }
-
     </table>
     <br />
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
     @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page }))
-
+    new { page }))
 
 </div>
 @section scripts{
     <script>
         $('.btn-danger').on('click', function (e) {
-
-            e.preventDefault();
-
-            const { id, naziv } = this.dataset;
+                        e.preventDefault();
+                    const { id, naziv } = this.dataset;
             if (confirm(`Jeste li sigurni da želite obrisati proizvod ${naziv}?`)) {
                 $.ajax({
-
-                    url: '@Url.Action(controllerName:"Proizvodi",actionName:"Delete")',
+                                        url: '@Url.Action(controllerName:"Proizvodi",actionName:"Delete")',
                     data: { id },
                     statusCode: {
-
                         200: function () {
                             $('.table')
                                 .find(`[data-id=${id}]`)
                                 .parents('tr').hide(500);
                         },
                         400: function () {
-
-                            console.log('Proizvod nie orbisa');
+                   console.log('Proizvod nie orbisa');
                         }
                     }
                 });
-
-
             }
-
-        })
-
-
+                    })
 
     </script>
-
 }

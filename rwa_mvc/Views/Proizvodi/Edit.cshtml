@@ -1,63 +1,44 @@
 ﻿@using rwa_mvc.Models.ViewModel
 @model ProizvodEditVm
-
-
 @{
     ViewBag.Title = "Edit";
     SelectList ddlOpcija = new SelectList(items: Model.Potkategorije, dataTextField: "Naziv", dataValueField: "IDPotkategorija");
 }
 @section scripts{
-
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-
-
     $('form').on('submit', function (e) {
         e.preventDefault();
         const form = $(e.target);
-
-        const proizvod = {};
-
-        if (form.valid()) {
-
+                const proizvod = {};
+                if (form.valid()) {
             const params = form.serializeArray();
-
             params.forEach(param => {
                 if (param.name.lastIndexOf('__') != -1) return;
                 let propertyName = param.name.substr(param.name.lastIndexOf('.') + 1);
                 if(propertyName=='IDPotkategorija') propertyName='PotkategorijaID'
-
-                proizvod[propertyName] = param.value;
-
-            })
+                                proizvod[propertyName] = param.value;
+                            })
             console.log(proizvod);
 
-
             $.ajax({
-
-                url: '@Url.Action(controllerName: "Proizvodi", actionName:"Edit")',
+                 url: '@Url.Action(controllerName: "Proizvodi", actionName:"Edit")',
                 data: proizvod,
                 method: 'post',
                 statusCode: {
                     200: function () {
                         $('.badge').html('Proizvod uspješno ažuriran');
                         setTimeout(function () {
-
-                            window.location = '@Url.Action(controllerName: "Proizvodi", actionName:"Index")'
+                      window.location = '@Url.Action(controllerName: "Proizvodi", actionName:"Index")'
                         }, 2000);
                     }
                 },
                 400: function () {
                     $('.badge').html('Proizvod nije uspješno ažuriran');
-
-
                 }
             })
-
         }
     })
-
-
     </script>
 }
 <h2>Edit</h2>

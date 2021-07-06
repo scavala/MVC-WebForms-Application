@@ -1,14 +1,10 @@
 ﻿@model DALL.BusinessLayer.Kategorija
-
 @{
     ViewBag.Title = "Edit";
 }
-
 @section scripts{
-    
     @Scripts.Render("~/bundles/jqueryval")
-<script>
-
+    <script>
 
     $('form').on('submit', function (e) {
         e.preventDefault();
@@ -17,18 +13,13 @@
         if (form.valid()) {
 
             const params = form.serializeArray();
-
             params.forEach(param => {
                 if (param.name.lastIndexOf('__') != -1) return;
                 let propertyName = param.name.substr(param.name.lastIndexOf('.') + 1);
-
-
                 kategorija[propertyName] = param.value;
-
             })
             console.log(kategorija);
             $.ajax({
-
                 url: '@Url.Action(controllerName:"Kategorija",actionName:"Edit")',
                 data: kategorija,
                 method: 'post',
@@ -36,23 +27,17 @@
                     200: function () {
                         $('.badge').html('Kategorija uspješno ažurirana');
                         setTimeout(function () {
-
                             window.location = '@Url.Action(controllerName:"Kategorija",actionName:"Index")'
                         }, 2000);
                     }
                 },
                 400: function () {
                     $('.badge').html('Kategorija nije uspješno ažurirana');
-
-
                 }
             })
-
         }
     })
-
-
-</script>
+    </script>
 }
 
 <h2>Edit</h2>
@@ -69,7 +54,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IDKategorija, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.IDKategorija, new {  @readonly = "readonly", htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.IDKategorija, new { @readonly = "readonly", htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.IDKategorija, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -89,7 +74,6 @@
         </div>
     </div>
 }
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

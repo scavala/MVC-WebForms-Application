@@ -3,7 +3,7 @@
 }
 <h1>Kupci</h1>
 <div class="jumbotron">
-   
+
 
     <table class="table">
         <thead>
@@ -14,53 +14,35 @@
                 <th>Email</th>
                 <th>Telefon</th>
             </tr>
-
-
-
         </thead>
-
     </table>
-        
 </div>
 
 
 @section scripts{
-    
-    
+
+
     <script>
         const dataTableConfig = {
             ajax: {
                 url: '/api/kupci',
-                dataSrc:''
+                dataSrc: ''
             },
             columns: [
-                {data:'IDKupac'},
-                {data:'Ime'},
+                { data: 'IDKupac' },
+                { data: 'Ime' },
                 { data: 'Prezime' },
                 {
                     data: 'Email',
                     render: function (email) {
                         return `<a href="mailto:${email}">${email}</a>`
                     }
-
                 },
-
-
-                {data:'Telefon'},
-
-
+                { data: 'Telefon' },
             ]
-
-
         }
         $('.table').DataTable(dataTableConfig)
 
-
-
     </script>
-    
-    
-    
-    
-    }
+}
 

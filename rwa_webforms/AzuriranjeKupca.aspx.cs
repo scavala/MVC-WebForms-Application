@@ -87,8 +87,6 @@ namespace rwa_webforms
 
                 lblInfo.Text = ex.Message;
             }
-
-
         }
 
         private void fillDdlDrzave()
@@ -116,7 +114,6 @@ namespace rwa_webforms
             try
             {
                 List<Kupac> listasort;
-
                 var gradIDfilter = ddlGradoviFilter.SelectedValue;
 
                 if (GridViewSortDirection == SortDirection.Ascending)
@@ -136,7 +133,6 @@ namespace rwa_webforms
             }
             catch (Exception ex)
             {
-
                 lblInfo.Text = ex.Message;
             }
         }
@@ -155,16 +151,14 @@ namespace rwa_webforms
                 }
                 else
                 {
-
                     gvKupci.DataSource = Repozitorij.GetKupci().Where(k => Repozitorij.GetGrad(k.GradID).DrzavaID.ToString() == ddlDrzaveFilter.SelectedValue || string.IsNullOrEmpty(ddlDrzaveFilter.SelectedValue)
-                   ).OrderBy(k => k.IDKupac).ToList();
+).OrderBy(k => k.IDKupac).ToList();
                 }
                 gvKupci.DataBind();
 
             }
             catch (Exception ex)
             {
-
                 lblInfo.Text = ex.Message;
             }
 
@@ -174,12 +168,10 @@ namespace rwa_webforms
         {
             try
             {
-
                 RefreshDDLgradovi(ddlGradovi, ddlDrzave);
             }
             catch (Exception ex)
             {
-
                 lblInfo.Text = ex.Message;
             }
 
@@ -221,7 +213,6 @@ namespace rwa_webforms
 
         private Kupac GetKupacFromForm()
         {
-
             Kupac k = new Kupac();
             k.IDKupac = int.Parse(txtIDKUPAC.Text);
             k.Ime = txtIme.Text;
@@ -292,7 +283,6 @@ namespace rwa_webforms
             return t;
         }
 
-
         protected string GetKreditnaKarticaFromID(object id)
         {
             string t;
@@ -326,30 +316,25 @@ namespace rwa_webforms
 
         protected void ddlGradoviFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
-                try
-                {
+
+            try
+            {
                 if (ddlGradoviFilter.SelectedValue == "0")
                 {
                     gvKupci.DataSource = Repozitorij.GetKupci().Where(kupac => Repozitorij.GetGrad(kupac.GradID).DrzavaID == int.Parse(ddlDrzaveFilter.SelectedValue)).ToList();
-                
                 }
                 else
                 {
-            
                     gvKupci.DataSource = Repozitorij.GetKupci().Where(kupac => kupac.GradID == int.Parse(ddlGradoviFilter.SelectedValue)).ToList();
-                  
                 }
 
-                }
-                catch (Exception ex)
-                {
-
-                    lblInfo.Text = ex.Message;
-                }
+            }
+            catch (Exception ex)
+            {
+                lblInfo.Text = ex.Message;
+            }
             gvKupci.DataBind();
 
         }
-
-        }
     }
+}

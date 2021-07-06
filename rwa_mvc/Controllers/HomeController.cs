@@ -11,8 +11,7 @@ namespace rwa_mvc.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            
-            return View();
+                        return View();
         }
 
     }

@@ -15,8 +15,8 @@ namespace rwa_mvc.Controllers
     [Authorize]
     public class PotkategorijaController : Controller
     {
-      
-        // GET: Potkategorija
+
+
         public ActionResult Index(int? page)
         {
 
@@ -52,7 +52,7 @@ namespace rwa_mvc.Controllers
             return Content(Repozitorij.GetPotkategorija(id).Naziv);
         }
 
-        
+
         public ActionResult Edit(int id)
         {
 
@@ -91,7 +91,6 @@ namespace rwa_mvc.Controllers
             }
             catch (Exception)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -99,8 +98,6 @@ namespace rwa_mvc.Controllers
         [HttpPost]
         public ActionResult Edit(Potkategorija p)
         {
-
-
             try
             {
                 Repozitorij.UpdatePotkategorija(p);
@@ -108,7 +105,6 @@ namespace rwa_mvc.Controllers
             }
             catch (Exception)
             {
-
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
