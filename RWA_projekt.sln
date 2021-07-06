@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rwa_webforms", "rwa_webform
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALL", "DALL\DALL.csproj", "{F45DFC26-28E4-427C-9754-3D8C2F68A7E6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4526DB6-F2E9-4073-893F-78E47CA3B557}"
+	ProjectSection(SolutionItems) = preProject
+		procedures.sql = procedures.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
